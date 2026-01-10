@@ -42,7 +42,12 @@ export default function Home() {
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
         <Card title="BMI">
-  <BMIPieWithNeedle bmi={sampleBMI} />
+  <BMIPieWithNeedle bmi={sampleBMI} trendData={[
+    { day: "1", bmi: 29 },
+    { day: "2", bmi: 30 },
+    { day: "3", bmi: 31 },
+    { day: "4", bmi: 31.5 },
+  ]} />
   <p className="mt-3 text-center text-sm text-black/80">
     BMI: <strong>{sampleBMI}</strong> — {getBMICategory(sampleBMI)}
   </p>
