@@ -5,6 +5,7 @@ import VitalLineChart from "@/components/charts/VitalLineChart";
 import BloodPressureChart from "@/components/charts/BloodPressureChart";
 import BMIPieWithNeedle from "@/components/charts/BMIPieWithNeedle";
 import { getBMICategory } from "@/utils/bmi";
+import MedicinceAutocomplete from "@/components/MedicineAutocomplete";
 import {
   heartRateData,
   bloodPressureData,
@@ -35,11 +36,12 @@ import Card from "@/components/Card";
 
 export default function Home() {
   const sampleBMI = 32.4;
+
   return (
     <div className="mx-auto max-w-7xl bg-gray-200 min-h-screen">
       <h1 className="text-4xl font-bold text-center py-3">Welcome to the Home Page</h1>
       <p className="text-center text-lg">This is a sample Next.js application.</p>
-      
+      <MedicinceAutocomplete />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
         <Card title="BMI">
   <BMIPieWithNeedle bmi={sampleBMI} trendData={[
@@ -53,13 +55,13 @@ export default function Home() {
   </p>
 </Card>
         <Card title="Heart Rate" className="hover:shadow-[0_0_40px_rgba(255,77,79,0.25)]">
-  <VitalLineChart
-    data={heartRateData}
-    dataKey="value"
-    color="#ff4d4f"
-    unit="bpm"
-  />
-</Card>
+          <VitalLineChart
+            data={heartRateData}
+            dataKey="value"
+            color="#ff4d4f"
+            unit="bpm"
+          />
+        </Card>
       <GlassCard title="Heart Rate">
         <VitalLineChart data={heartRateData} dataKey="value" color="#ff4d4f" unit="bpm" />
       </GlassCard>
