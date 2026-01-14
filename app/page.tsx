@@ -1,3 +1,4 @@
+"use client";
 import GlassCard from "@/components/ui/GlassCard";
 // import HeartRateChart from "@/components/HeartRateChart";
 // import BloodPressureChart from "@/components/BloodPressureChart";
@@ -5,7 +6,7 @@ import VitalLineChart from "@/components/charts/VitalLineChart";
 import BloodPressureChart from "@/components/charts/BloodPressureChart";
 import BMIPieWithNeedle from "@/components/charts/BMIPieWithNeedle";
 import { getBMICategory } from "@/utils/bmi";
-import MedicinceAutocomplete from "@/components/MedicineAutocomplete";
+import { searchMedicines } from "@/api/searchMedicines";
 import {
   heartRateData,
   bloodPressureData,
@@ -17,7 +18,14 @@ import {
   heightData,
 } from "@/data/vitals-data";
 import Card from "@/components/Card";
-
+import MedicalSection from "@/components/MedicalSection";
+// import { medicines } from "@/components/medicines";
+import { useEffect, useState } from "react";
+import { MedicineMaster } from "@/types/medicine";
+import { getAISuggestedMedicines } from "@/api/getAISuggestedMedicines";
+import TestsSection from "@/components/TestsSection";
+import { TestItem } from "@/types/test";
+import { getAISuggestedTests } from "@/api/getAISuggestedTests";
 
 // import { Style } from '@/components/Styles/glass.module.css'
 
@@ -36,12 +44,48 @@ import Card from "@/components/Card";
 
 export default function Home() {
   const sampleBMI = 32.4;
+  const [medicines, setMedicines] = useState<MedicineMaster[]>([]);
+  const [loadingMedicines, setLoadingMedicines] = useState(false);
+  const canEditOrders = true; // Replace with actual permission logic
 
+  const [tests, setTests] = useState<TestItem[]>([]);
+  const [loadingTests, setLoadingTests] = useState(false);
+  
+  useEffect(() => {
+    const fetchMedicines = async () => {
+      setLoadingMedicines(true);
+      const meds = await getAISuggestedMedicines();
+      setMedicines(meds);
+      setLoadingMedicines(false);
+    };
+    fetchMedicines();
+
+    const fetchTests = async () => {
+      setLoadingTests(true);
+      const ts = await getAISuggestedTests();
+      setTests(ts);
+      setLoadingTests(false);
+    }
+    fetchTests();
+  }, []);
   return (
     <div className="mx-auto max-w-7xl bg-gray-200 min-h-screen">
       <h1 className="text-4xl font-bold text-center py-3">Welcome to the Home Page</h1>
       <p className="text-center text-lg">This is a sample Next.js application.</p>
-      <MedicinceAutocomplete />
+      <MedicalSection 
+        suggestedMedicines={medicines}
+        loading={loadingMedicines}
+        disabled={!canEditOrders}
+        searchMedicines={searchMedicines}
+        />
+
+          <TestsSection
+          tests={tests}
+          loading={loadingTests}
+          onChange={setTests}
+          disabled={!canEditOrders}
+        />
+      {/* <MedicinceAutocomplete /> */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
         <Card title="BMI">
   <BMIPieWithNeedle bmi={sampleBMI} trendData={[
