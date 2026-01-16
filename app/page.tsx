@@ -26,6 +26,7 @@ import { getAISuggestedMedicines } from "@/api/getAISuggestedMedicines";
 import TestsSection from "@/components/TestsSection";
 import { TestItem } from "@/types/test";
 import { getAISuggestedTests } from "@/api/getAISuggestedTests";
+import MedicalSectionDone from "@/components/MedicalSectionDone";
 
 // import { Style } from '@/components/Styles/glass.module.css'
 
@@ -50,7 +51,7 @@ export default function Home() {
 
   const [tests, setTests] = useState<TestItem[]>([]);
   const [loadingTests, setLoadingTests] = useState(false);
-  
+
   useEffect(() => {
     const fetchMedicines = async () => {
       setLoadingMedicines(true);
@@ -65,40 +66,57 @@ export default function Home() {
       const ts = await getAISuggestedTests();
       setTests(ts);
       setLoadingTests(false);
-    }
+    };
     fetchTests();
   }, []);
   return (
     <div className="mx-auto max-w-7xl bg-gray-200 min-h-screen">
-      <h1 className="text-4xl font-bold text-center py-3">Welcome to the Home Page</h1>
-      <p className="text-center text-lg">This is a sample Next.js application.</p>
-      <MedicalSection 
+      <h1 className="text-4xl font-bold text-center py-3">
+        Welcome to the Home Page
+      </h1>
+      <p className="text-center text-lg">
+        This is a sample Next.js application.
+      </p>
+      <MedicalSectionDone
         suggestedMedicines={medicines}
         loading={loadingMedicines}
         disabled={!canEditOrders}
         searchMedicines={searchMedicines}
-        />
+      />
 
-          <TestsSection
-          tests={tests}
-          loading={loadingTests}
-          onChange={setTests}
-          disabled={!canEditOrders}
-        />
+      <MedicalSection
+        suggestedMedicines={medicines}
+        loading={loadingMedicines}
+        disabled={!canEditOrders}
+        searchMedicines={searchMedicines}
+      />
+
+      <TestsSection
+        tests={tests}
+        loading={loadingTests}
+        onChange={setTests}
+        disabled={!canEditOrders}
+      />
       {/* <MedicinceAutocomplete /> */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
         <Card title="BMI">
-  <BMIPieWithNeedle bmi={sampleBMI} trendData={[
-    { day: "1", bmi: 29 },
-    { day: "2", bmi: 30 },
-    { day: "3", bmi: 31 },
-    { day: "4", bmi: 31.5 },
-  ]} />
-  <p className="mt-3 text-center text-sm text-black/80">
-    BMI: <strong>{sampleBMI}</strong> — {getBMICategory(sampleBMI)}
-  </p>
-</Card>
-        <Card title="Heart Rate" className="hover:shadow-[0_0_40px_rgba(255,77,79,0.25)]">
+          <BMIPieWithNeedle
+            bmi={sampleBMI}
+            trendData={[
+              { day: "1", bmi: 29 },
+              { day: "2", bmi: 30 },
+              { day: "3", bmi: 31 },
+              { day: "4", bmi: 31.5 },
+            ]}
+          />
+          <p className="mt-3 text-center text-sm text-black/80">
+            BMI: <strong>{sampleBMI}</strong> — {getBMICategory(sampleBMI)}
+          </p>
+        </Card>
+        <Card
+          title="Heart Rate"
+          className="hover:shadow-[0_0_40px_rgba(255,77,79,0.25)]"
+        >
           <VitalLineChart
             data={heartRateData}
             dataKey="value"
@@ -106,38 +124,68 @@ export default function Home() {
             unit="bpm"
           />
         </Card>
-      <GlassCard title="Heart Rate">
-        <VitalLineChart data={heartRateData} dataKey="value" color="#ff4d4f" unit="bpm" />
-      </GlassCard>
+        <GlassCard title="Heart Rate">
+          <VitalLineChart
+            data={heartRateData}
+            dataKey="value"
+            color="#ff4d4f"
+            unit="bpm"
+          />
+        </GlassCard>
 
-      <GlassCard title="Blood Pressure">
-        <BloodPressureChart data={bloodPressureData} />
-      </GlassCard>
+        <GlassCard title="Blood Pressure">
+          <BloodPressureChart data={bloodPressureData} />
+        </GlassCard>
 
-      <GlassCard title="Weight">
-        <VitalLineChart data={weightData} dataKey="value" color="#00d8ff" unit="kg" />
-      </GlassCard>
+        <GlassCard title="Weight">
+          <VitalLineChart
+            data={weightData}
+            dataKey="value"
+            color="#00d8ff"
+            unit="kg"
+          />
+        </GlassCard>
 
-      <GlassCard title="SpO₂">
-        <VitalLineChart data={spo2Data} dataKey="value" color="#00ffa2" unit="%" />
-      </GlassCard>
+        <GlassCard title="SpO₂">
+          <VitalLineChart
+            data={spo2Data}
+            dataKey="value"
+            color="#00ffa2"
+            unit="%"
+          />
+        </GlassCard>
 
-      <GlassCard title="Temperature">
-        <VitalLineChart data={temperatureData} dataKey="value" color="#ff6b6b" unit="°F" />
-      </GlassCard>
+        <GlassCard title="Temperature">
+          <VitalLineChart
+            data={temperatureData}
+            dataKey="value"
+            color="#ff6b6b"
+            unit="°F"
+          />
+        </GlassCard>
 
-      <GlassCard title="Pulse Rate">
-        <VitalLineChart data={pulseRateData} dataKey="value" color="#c77dff" unit="bpm" />
-      </GlassCard>
+        <GlassCard title="Pulse Rate">
+          <VitalLineChart
+            data={pulseRateData}
+            dataKey="value"
+            color="#c77dff"
+            unit="bpm"
+          />
+        </GlassCard>
 
-      <GlassCard title="BMI">
-        <VitalLineChart data={bmiData} dataKey="value" color="#ffd166" />
-      </GlassCard>
+        <GlassCard title="BMI">
+          <VitalLineChart data={bmiData} dataKey="value" color="#ffd166" />
+        </GlassCard>
 
-      <GlassCard title="Height">
-        <VitalLineChart data={heightData} dataKey="value" color="#4dabf7" unit="cm" />
-      </GlassCard>
+        <GlassCard title="Height">
+          <VitalLineChart
+            data={heightData}
+            dataKey="value"
+            color="#4dabf7"
+            unit="cm"
+          />
+        </GlassCard>
+      </div>
     </div>
-    </div>
-  )
+  );
 }

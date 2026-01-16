@@ -3,7 +3,7 @@ export type Unit = "mg" | "ml";
 export type MedicineMaster = {
   id: string;
   name: string;
-  strength: string;
+  strength: string | string[];
   frequency: string;
   duration: string;
   when: string;
@@ -11,6 +11,7 @@ export type MedicineMaster = {
   route: string;
   unit?: Unit;
   pediatric?: boolean;
+  notes?: string;
   interactions?: string[];
 };
 
